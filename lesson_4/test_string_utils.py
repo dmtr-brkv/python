@@ -61,4 +61,3 @@ def test_delete_symbol_negative(self, string, symbol):
     with pytest.raises(ValueError):
         StringUtils().delete_symbol(string, symbol)
 
-
