@@ -1,18 +1,8 @@
 import requests
 
-# login = "dmtr.brkv.4@gmail.com"
-# password = "екл48сийй"
-# company_name = "Поток_100"
-# key = "pCvbGF3AfocmkbcHr6N3S12qaAgzdmmVIYAy7pppNkbkrrMEPvy4st46tBTkCn9B"
-key = "XDNF8ZJi7QZVvWMW9tDTaB07+D70MoeYWTqeP99wdcKTrLxxgUKPGX7ochHEGcHw"
+key = " #ключ "
 
-# body_company = {
-#         "login": login,
-#         "password": password,
-#         "name": company_name
-#         }
-
-headers = {"Authorization" : "Bearer {key}",
+headers = {"Authorization" : f"Bearer {key}",
            "Content-Type": "application/json"}
 data = {"title": "Круги на поле"}
 data_new = {"deleted": False, "title": "Круги в поле",}
@@ -20,13 +10,15 @@ data_new = {"deleted": False, "title": "Круги в поле",}
 base_url = "https://ru.yougile.com/api-v2"
 
 def test_create_projects():
-    create = requests.post(f'{base_url}/projects', headers=headers, data=data)
+    create = requests.post(f'{base_url}/projects', headers=headers, json=data)
+    assert create.status_code == 201
     list = requests.get(f'{base_url}/projects', headers=headers)
     response = list.json()
     assert response != 0
 
+
 def test_get_id():
-    create = requests.post(f'{base_url}/projects', headers=headers, data=data)
+    create = requests.post(f'{base_url}/projects', headers=headers, json=data)
     id_json = create.json()
     new_id = id_json["id"]
     get_id = requests.get(f'{base_url}/projects/{new_id}', headers=headers)
@@ -39,7 +31,7 @@ def test_add_projects():
     list = requests.get(f'{base_url}/projects',headers=headers)
     response = list.json()
     to_be = response["paging"]["count"]
-    create = requests.post(f'{base_url}/projects',headers=headers, data=data)
+    create = requests.post(f'{base_url}/projects',headers=headers, json=data)
     last_list = requests.get(f'{base_url}/projects', headers=headers)
     response = last_list.json()
     to_end = response["paging"]["count"]
@@ -47,10 +39,10 @@ def test_add_projects():
 
 
 def test_change_id():
-    create = requests.post(f'{base_url}/projects', headers=headers, data=data)
+    create = requests.post(f'{base_url}/projects', headers=headers, json=data)
     create_json = create.json()
     create_id = create_json["id"]
-    create_new = requests.post(f'{base_url}/projects/{create_id}',headers=headers, data=data_new)
+    change_new = requests.put(f'{base_url}/projects/{create_id}',headers=headers, json=data_new)
     get_create = requests.get(f'{base_url}/projects/{create_id}', headers=headers)
     create_json_last = get_create.json()
     title_create = create_json_last["title"]
@@ -62,7 +54,7 @@ headers_negative = {"Authorization" : "Bearer 123",
            "Content-Type": "application/json"}
 
 def test_crete_negative_key():
-    create = requests.post(f'{base_url}/projects', headers=headers_negative, data=data)
+    create = requests.post(f'{base_url}/projects', headers=headers_negative, json=data)
     list = requests.get(f'{base_url}/projects', headers=headers_negative)
     assert list.status_code == 401
 
@@ -75,14 +67,14 @@ def test_get_negative_id():
 data_negative = {"deleted": True, "title": "Круги в поле",}
 
 def test_change_negative_id():
-    create = requests.post(f'{base_url}/projects', headers=headers, data=data)
+    create = requests.post(f'{base_url}/projects', headers=headers, json=data)
     create_json = create.json()
     create_id = create_json["id"]
-    create_new = requests.post(f'{base_url}/projects/{create_id}',headers=headers, data=data_negative)
+    create_new = requests.post(f'{base_url}/projects/{create_id}',headers=headers, json=data_negative)
     get_create = requests.get(f'{base_url}/projects/{create_id}', headers=headers)
     create_json_last = get_create.json()
     title_create = create_json_last["title"]
-    assert title_create == "Круги в поле"
+    assert title_create == "Круги на поле"
 
 
 
