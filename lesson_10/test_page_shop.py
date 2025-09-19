@@ -11,13 +11,15 @@ from shop_checkout_page import checkoutPage
 from shop_authorization_page import autPage
 from shop_step_one_page import stepOnePage
 
-@allure.title("Тестирование магазина: {} {operation} {num2} "
-              "= {expected_result}")
+@allure.title("Тестирование магазина")
 @allure.description("Тест проверяет корректность работу магазина "
                     "сравнивает стоимость добавленных товар с итоговой.")
 @allure.feature("Магазин")
 @allure.severity(allure.severity_level.CRITICAL)
 def test_shop_total():
+    """
+    Тест проверяет работу магазина, и сравнивает сумму добавленных в корзину товаров с ожидаемой.
+    """
     browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
     with allure.step("Открытие страницы авторизации"):
