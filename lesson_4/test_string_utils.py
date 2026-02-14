@@ -1,6 +1,7 @@
 import pytest
 from string_utils import StringUtils
 
+
 @pytest.mark.parametrize("input_text, expected_output", [
         ("hello", "Hello"),
         ("Hello", "Hello"),
@@ -13,7 +14,7 @@ def test_capitalize(input_text, expected_output):
 
 
 @pytest.mark.parametrize("input_text", [123, None, "", "123", " "])
-def test_capitalize_negative(self, input_text):
+def test_capitalize_negative(input_text):
     with pytest.raises(ValueError):
         StringUtils().capitalize(input_text)
 
@@ -30,7 +31,7 @@ def test_trim(input_text, expected_output):
 
 
 @pytest.mark.parametrize("input_text", [123, None])
-def test_trim_negative(self, input_text):
+def test_trim_negative(input_text):
     with pytest.raises(ValueError):
         StringUtils().trim(input_text)
 
@@ -43,8 +44,8 @@ def test_trim_negative(self, input_text):
     ("abc", "c", True),
 ])
 def test_contains(string, symbol, expected):
-    bool = StringUtils()
-    return bool
+    result = StringUtils().contains(string, symbol)
+    assert result == expected
 
 
 @pytest.mark.parametrize("string, symbol, expected", [
@@ -57,7 +58,6 @@ def test_delete_symbol(string, symbol, expected):
 
 
 @pytest.mark.parametrize("string, symbol", [(123, "a"), (None, "b")])
-def test_delete_symbol_negative(self, string, symbol):
+def test_delete_symbol_negative(string, symbol):
     with pytest.raises(ValueError):
         StringUtils().delete_symbol(string, symbol)
-
